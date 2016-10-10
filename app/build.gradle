@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: "net.ltgt.apt"
 
 android {
     compileSdkVersion 24
@@ -26,4 +28,15 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:24.2.1'
     testCompile 'junit:junit:4.12'
+
+    // butter knife library
+    compile 'com.jakewharton:butterknife:8.4.0'
+    apt 'com.jakewharton:butterknife-compiler:8.4.0'
+
+    // auto value library
+//    compileOnly "com.google.auto.value:auto-value:1.2"
+//    apt         "com.google.auto.value:auto-value:1.2"
+
+    // timber library
+    compile 'com.jakewharton.timber:timber:4.3.1'
 }
