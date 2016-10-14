@@ -31,7 +31,7 @@ public class WebViewTestActivity extends AppCompatActivity {
         setContentView(R.layout.activity_webview_test);
         ButterKnife.bind(this);
 
-        Timber.d("onCreate");
+//        Timber.d("onCreate");
 
         mProgressBar.setMax(100);
 
