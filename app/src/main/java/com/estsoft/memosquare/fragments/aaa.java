@@ -1,4 +1,4 @@
-package com.estsoft.memosquare.views.fragments;
+package com.estsoft.memosquare.fragments;
 
 /**
  * Created by hokyung on 2016. 10. 12..
