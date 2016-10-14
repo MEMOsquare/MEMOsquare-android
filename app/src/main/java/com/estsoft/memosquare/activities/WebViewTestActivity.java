@@ -1,4 +1,4 @@
-package com.estsoft.memosquare.views.activities;
+package com.estsoft.memosquare.activities;
 
 import android.annotation.SuppressLint;
 import android.net.Uri;
@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
@@ -14,6 +15,7 @@ import com.estsoft.memosquare.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 public class WebViewTestActivity extends AppCompatActivity {
 
