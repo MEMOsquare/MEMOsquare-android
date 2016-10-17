@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "12130227580",
+    "project_id": "memosquare-android"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:12130227580:android:38b9e3e2ff2f3b50",
+        "android_client_info": {
+          "package_name": "com.estsoft.memosquare"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "12130227580-hbc5uqia8venaj64ar4ne3nedgoibbuv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.estsoft.memosquare",
+            "certificate_hash": "9D23245A74375F040122E5382E1746BBD15CC496"
+          }
+        },
+        {
+          "client_id": "12130227580-iq5bv8mnu8dcv88c1luuimt6dmlgqk1u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDSAKkUsmEyVomSbzioIf62bXHWAKvxmHg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
