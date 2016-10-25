@@ -6,9 +6,6 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
-    
-    <!-- Main Page -->
-    <string name="main_yours">yours</string>
-    <string name="main_clipbook">clipbook</string>
-    <string name="main_square">square</string>
+
+
 </resources>
