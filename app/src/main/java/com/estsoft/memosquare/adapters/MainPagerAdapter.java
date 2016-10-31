@@ -28,6 +28,12 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
     }
 
     @Override
+    public CharSequence getPageTitle(int position)
+    {
+        return mFragmentTitles.get(position);
+    }
+
+    @Override
     public Fragment getItem(int position)
     {
         return mFragments.get(position);
@@ -37,11 +43,5 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
     public int getCount()
     {
         return mFragments.size();
-    }
-
-    @Override
-    public CharSequence getPageTitle(int position)
-    {
-        return mFragmentTitles.get(position);
     }
 }

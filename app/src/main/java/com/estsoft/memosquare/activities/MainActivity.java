@@ -18,11 +18,10 @@ import android.view.View;
 
 import com.estsoft.memosquare.R;
 import com.estsoft.memosquare.adapters.MainPagerAdapter;
-import com.estsoft.memosquare.fragments.MainTab1Fragment;
-import com.estsoft.memosquare.fragments.MainTab2Fragment;
-import com.estsoft.memosquare.fragments.MainTab3Fragment;
+import com.estsoft.memosquare.fragments.MainTabMymemoFragment;
+import com.estsoft.memosquare.fragments.MainTabClipbookFragment;
+import com.estsoft.memosquare.fragments.MainTabSquareFragment;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
@@ -44,7 +43,7 @@ public class MainActivity extends AppCompatActivity{
         // 3. Setup View Pager
         // 4. Setup Floating Action Button
 
-        // STEP1> Setup Toolbar
+        // 1. Setup Toolbar
         {
             setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
             final ActionBar ab = getSupportActionBar();
@@ -52,7 +51,7 @@ public class MainActivity extends AppCompatActivity{
             ab.setDisplayHomeAsUpEnabled(true);
         }
 
-        // STEP2> Setup Drawer
+        // 2. Setup Drawer
         {
             mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
             NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -67,26 +66,26 @@ public class MainActivity extends AppCompatActivity{
                     });
         }
 
-        // STEP3> Setup View Pager
+        // 3. Setup View Pager
         {
-            //Initializing ViewPager
+            //3.1. Initializing ViewPager
             viewPager = (ViewPager) findViewById(R.id.viewpager);
 
-            //Creating PagerAdapter
+            //3.2. Creating PagerAdapter
             MainPagerAdapter adapter = new MainPagerAdapter(getSupportFragmentManager());
-            adapter.addFragment(new MainTab1Fragment(), getString(R.string.main_yours));
-            adapter.addFragment(new MainTab2Fragment(), getString(R.string.main_clipbook));
-            adapter.addFragment(new MainTab3Fragment(), getString(R.string.main_square));
+            adapter.addFragment(new MainTabMymemoFragment(), getString(R.string.main_yours));
+            adapter.addFragment(new MainTabClipbookFragment(), getString(R.string.main_clipbook));
+            adapter.addFragment(new MainTabSquareFragment(), getString(R.string.main_square));
             viewPager.setAdapter(adapter);
 
-            //Initializing TabLayout
+            //3.3. Initializing TabLayout
             TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
 
-            //Connecting tabLayout, ViewPager
+            //3.4. Connecting tabLayout, ViewPager
             tabLayout.setupWithViewPager(viewPager);
         }
 
-        // STEP4> Setup Floating Action Button
+        // 4. Setup Floating Action Button
         {
             FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
             fab.setOnClickListener(new View.OnClickListener() {

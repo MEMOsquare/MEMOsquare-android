@@ -1,12 +1,17 @@
 <resources>
     <string name="app_name">MEMOSquare</string>
-    <!-- Server Client ID.  This should be a valid Web OAuth 2.0 Client ID obtained
-     from https://console.developers.google.com/ -->
-    <string name="server_client_id">12130227580-iq5bv8mnu8dcv88c1luuimt6dmlgqk1u.apps.googleusercontent.com</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
-    
+
+    <!-- Sign in with XX -->
+    <!-- Google Server Client ID -->
+    <string name="server_client_id">12130227580-iq5bv8mnu8dcv88c1luuimt6dmlgqk1u.apps.googleusercontent.com</string>
+    <!-- Facebook app id-->
+    <string name="fb_login_protocol_scheme">fb192456264535234</string>
+    <string name="fb_app_id">192456264535234</string>
+
+    <!-- Elements in each activity -->
     <!-- Main Page -->
     <string name="main_yours">yours</string>
     <string name="main_clipbook">clipbook</string>

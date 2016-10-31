@@ -30,38 +30,50 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
+    //1. UI, Design
     // material design
     compile 'com.android.support:design:24.2.1'
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.android.support:cardview-v7:24.2.1'
     compile 'com.android.support:recyclerview-v7:24.2.1'
-
     // support library (호환성 관리)
     compile 'com.android.support:support-core-utils:24.2.1'
 
-    // 통신
+
+    //2. Connection
     // retrofit (REST API 통신, OkHttp 포함)
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
 
+
+    //3. Sign-in
+    //google sign-in
+    compile 'com.google.android.gms:play-services-auth:9.6.1'
+    //facebook sign-in
+    compile 'com.facebook.android:facebook-android-sdk:[4,5)'
+
+
+    //4. Utils
+    compile 'com.google.code.gson:gson:2.4'
+
+    //5. For convenience
     // butterknife (cast resources(view, etc))
     compile 'com.jakewharton:butterknife:8.4.0'
-
     // timber (log 남기기)
     compile 'com.jakewharton.timber:timber:4.3.1'
-
-
     // auto value library
     //    compileOnly "com.google.auto.value:auto-value:1.2"
     //    apt         "com.google.auto.value:auto-value:1.2"
     // WebViewMarker
     //    compile 'com.github.naoak:WebViewMarker:v0.1.3'
 
-    //google sign-in
-    compile 'com.google.android.gms:play-services-auth:9.6.1'
 
     testCompile 'junit:junit:4.12'
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
+
+
+
+
 }
 
 //google sign-in
