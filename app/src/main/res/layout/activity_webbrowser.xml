@@ -10,23 +10,68 @@
         android:id="@+id/web_appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/web_toolbar"
+        android:theme="@style/WebBrowserTheme"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
+        
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            app:layout_scrollFlags="scroll|enterAlways" >
+            android:orientation="horizontal"
+            app:layout_scrollFlags="scroll|enterAlways">
 
-            <EditText
-                android:id="@+id/web_url_input"
-                android:layout_width="match_parent"
+            <RelativeLayout
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:background="#fff"/>
+                android:layout_weight="8">
 
-        </android.support.v7.widget.Toolbar>
+                <EditText
+                    android:id="@+id/web_url_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:selectAllOnFocus="true"
+                    android:background="#fff"
+                    android:layout_margin="10dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="5dp"/>
+
+                <ImageButton
+                    android:id="@+id/go_url_btn"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_centerVertical="true"
+                    android:layout_alignRight="@id/web_url_input"
+                    android:src="@drawable/ic_go_url"
+                    android:background="@android:color/transparent"
+                    android:visibility="gone"/>
+
+            </RelativeLayout>
+
+            <ImageButton
+                android:id="@+id/square_btn"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/logo_main"
+                android:scaleType="centerInside"
+                android:background="@android:color/transparent"
+                android:layout_margin="3dp"
+                android:padding="3dp"/>
+
+        </LinearLayout>
+
+        <!--<android.support.v7.widget.Toolbar-->
+            <!--android:id="@+id/web_toolbar"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="?attr/actionBarSize"-->
+            <!--android:background="?attr/colorPrimary"-->
+            <!--app:popupTheme="@style/ThemeOverlay.AppCompat.Light"-->
+            <!--app:layout_scrollFlags="scroll|enterAlways"-->
+            <!--android:weightSum="1">-->
+
+        <!--</android.support.v7.widget.Toolbar>-->
 
         <android.support.design.widget.TabLayout
             android:id="@+id/web_tabLayout"
@@ -35,27 +80,26 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <android.support.v4.view.ViewPager
-            android:id="@+id/web_viewpager"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="6"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <FrameLayout
-            android:id="@+id/web_memo_container"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="4"
-            android:visibility="gone"></FrameLayout>
+            <android.support.v4.view.ViewPager
+                android:id="@+id/web_viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="6" />
 
-    </LinearLayout>
+            <FrameLayout
+                android:id="@+id/web_memo_container"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="4"
+                android:visibility="gone"></FrameLayout>
+
+        </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/web_fab"

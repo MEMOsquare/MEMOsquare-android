@@ -9,6 +9,7 @@ import java.util.List;
 
 /**
  * Created by hokyung on 2016. 11. 1..
+ * 페이저 어댑터는 하나만 써도 될 것 같은데
  */
 
 public class WebBrowserPagerAdapter extends FragmentPagerAdapter {

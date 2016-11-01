@@ -17,4 +17,11 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <!-- WebBrowser를 위한 테마 -->
+    <style name="WebBrowserTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorGray</item>
+        <item name="colorPrimaryDark">@color/colorLightGray</item>
+        <item name="colorAccent">@color/colorDarkGray</item>
+    </style>
+
 </resources>

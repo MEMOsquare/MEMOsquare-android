@@ -17,6 +17,7 @@
     <string name="main_clipbook">clipbook</string>
     <string name="main_square">square</string>
     <!-- WebBrowser -->
+    <string name="basic_url">http://www.google.com</string>
     <string name="tab_web">web</string>
     <string name="tab_memo">memo</string>
 </resources>

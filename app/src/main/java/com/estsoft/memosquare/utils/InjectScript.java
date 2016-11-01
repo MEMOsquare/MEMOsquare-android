@@ -70,7 +70,7 @@ public class InjectScript {
         }
     }
 
-    public void injectJavaScriptFile(WebView view, String scriptFile) {
+    private void injectJavaScriptFile(WebView view, String scriptFile) {
         InputStream input;
         try {
             input = mContext.getAssets().open(scriptFile);
@@ -92,7 +92,7 @@ public class InjectScript {
         }
     }
 
-    public void injectCSSFile(WebView view, String cssFile) {
+    private void injectCSSFile(WebView view, String cssFile) {
         view.loadUrl("javascript:(function() {" +
                 "var parent = document.getElementsByTagName('head').item(0);" +
                 "var link = document.createElement('link');" +
@@ -105,7 +105,7 @@ public class InjectScript {
 //        view.loadDataWithBaseURL("file:///android_asset/", htmlData, "text/html", "UTF-8", null);
     }
 
-    public void injectEditableClass(WebView view) {
+    private void injectEditableClass(WebView view) {
         view.loadUrl("javascript:(function() {" +
                 "var body = document.getElementsByTagName('body').item(0);" +
                 "body.classList.add('editable');" +
