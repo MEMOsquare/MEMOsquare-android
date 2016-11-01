@@ -54,7 +54,7 @@
         </activity>
 
         <!-- Webbrower Activity -->
-        <activity android:name=".activities.WebbrowserActivity">
+        <activity android:name=".activities.WebBrowserActivity">
         </activity>
     </application>
 

@@ -15,23 +15,23 @@ import timber.log.Timber;
  * Created by hokyung on 2016. 10. 21..
  */
 
-public class InjectJavaScript {
+public class InjectScript {
 
-    private static InjectJavaScript sInjectJavaScript;
+    private static InjectScript sInjectScript;
 
     private Context mContext;
     private List<String> jsFiles;
     private List<String> cssFiles;
 
-    public static InjectJavaScript get(Context context) {
-        if (sInjectJavaScript == null) {
-           sInjectJavaScript = new InjectJavaScript(context);
+    public static InjectScript get(Context context) {
+        if (sInjectScript == null) {
+           sInjectScript = new InjectScript(context);
         }
 
-        return sInjectJavaScript;
+        return sInjectScript;
     }
 
-    private InjectJavaScript(Context context) {
+    private InjectScript(Context context) {
         mContext = context;
 
         jsFiles = new ArrayList<>();
