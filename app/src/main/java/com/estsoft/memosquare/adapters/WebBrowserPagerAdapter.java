@@ -11,12 +11,12 @@ import java.util.List;
  * Created by hokyung on 2016. 11. 1..
  */
 
-public class WebrowserPagerAdapter extends FragmentPagerAdapter {
+public class WebBrowserPagerAdapter extends FragmentPagerAdapter {
 
     private final List<Fragment> mFragments = new ArrayList<>();
     private final List<String> mFragmentTitles = new ArrayList<>();
 
-    public WebrowserPagerAdapter(FragmentManager fm) {
+    public WebBrowserPagerAdapter(FragmentManager fm) {
         super(fm);
     }
 
