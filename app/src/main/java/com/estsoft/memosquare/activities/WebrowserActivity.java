@@ -13,7 +13,7 @@ import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.estsoft.memosquare.R;
-import com.estsoft.memosquare.adapters.WebBrowserPagerAdapter;
+import com.estsoft.memosquare.adapters.WebrowserPagerAdapter;
 import com.estsoft.memosquare.fragments.WebBrowserMemoListFragment;
 import com.estsoft.memosquare.fragments.WebBrowserWebViewFragment;
 
@@ -24,7 +24,7 @@ import timber.log.Timber;
 
 // Webbrowser 상태에서 항상 떠있을 액티비티
 // 한 액티비티 안에서 changeMode를 통해 메모보기, 쓰기 등 여러 형태로 바꾼다
-public class WebBrowserActivity extends AppCompatActivity {
+public class WebrowserActivity extends AppCompatActivity {
 
     // 모드의 종류
     public static final int WEBBROWSING = 1000;
@@ -57,7 +57,7 @@ public class WebBrowserActivity extends AppCompatActivity {
 
         // 2. Setup View Pager
         // 2.1 Creating PagerAdapter
-        WebBrowserPagerAdapter adapter = new WebBrowserPagerAdapter(getSupportFragmentManager());
+        WebrowserPagerAdapter adapter = new WebrowserPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new WebBrowserWebViewFragment(), tabWeb);
         adapter.addFragment(new WebBrowserMemoListFragment(), tabMemo);
         mViewPager.setAdapter(adapter);
@@ -69,7 +69,7 @@ public class WebBrowserActivity extends AppCompatActivity {
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(WebBrowserActivity.this, "fab is clicked", Toast.LENGTH_SHORT).show();
+                Toast.makeText(WebrowserActivity.this, "fab is clicked", Toast.LENGTH_SHORT).show();
             }
         });
     }
