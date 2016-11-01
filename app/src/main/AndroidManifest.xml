@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".activities.WelcomeActivity">
+        <activity android:name=".activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -43,11 +43,11 @@
         </activity>
 
         <!-- Main Activity -->
-        <activity
-            android:name=".activities.MainActivity"
-            android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+        <!--<activity-->
+            <!--android:name=".activities.MainActivity"-->
+            <!--android:label="@string/title_activity_main"-->
+            <!--android:theme="@style/AppTheme.NoActionBar">-->
+        <!--</activity>-->
     </application>
 
 </manifest>

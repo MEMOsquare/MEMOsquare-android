@@ -131,7 +131,7 @@ public class WelcomeActivity extends AppCompatActivity {
                         });
 
                 Bundle parameters = new Bundle();
-                parameters.putString("fields", "id,name,email,gender, birthday");
+                parameters.putString("fields", "id,name,email,picture.width(120).height(120)");
                 request.setParameters(parameters);
                 request.executeAsync();
             }
