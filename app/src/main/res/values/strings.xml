@@ -17,7 +17,14 @@
     <string name="main_clipbook">clipbook</string>
     <string name="main_square">square</string>
     <!-- WebBrowser -->
-    <string name="basic_url">http://www.google.com</string>
+    <string name="basic_url">http://www.naver.com</string>
     <string name="tab_web">web</string>
     <string name="tab_memo">memo</string>
+    <string name="highlight_btn">add to memo</string>
+    <string name="title_hint">Title</string>
+    <string name="content_hint">content</string>
+    <string name="secret_switch">secret</string>
+    <string name="public_switch">public </string>
+    <string name="save">save</string>
+    <string name="wait">Wait a second</string>
 </resources>

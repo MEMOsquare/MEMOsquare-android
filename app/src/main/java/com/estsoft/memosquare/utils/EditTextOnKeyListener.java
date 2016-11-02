@@ -6,6 +6,8 @@ import android.view.View;
 
 import com.estsoft.memosquare.activities.WebBrowserActivity;
 
+import timber.log.Timber;
+
 /**
  * Created by hokyung on 2016. 11. 1..
  * 주소창에서의 엔터키 입력을 받기 위한 클래스
@@ -33,6 +35,14 @@ public class EditTextOnKeyListener implements View.OnKeyListener {
             // 웹뷰 액티비티의 주소창일 경우
             if (mActivity == WEBBROWSERACTIVITY) {
                 ((WebBrowserActivity) mContext).goUrl();
+                ((WebBrowserActivity) mContext).clearEditTextFocus();
+            }
+        }
+
+        // 취소버튼 눌렀을 때
+        if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+            // 웹뷰 액티비티의 주소창일 경우
+            if (mActivity == WEBBROWSERACTIVITY) {
                 ((WebBrowserActivity) mContext).clearEditTextFocus();
             }
         }
