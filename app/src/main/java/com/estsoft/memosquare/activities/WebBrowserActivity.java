@@ -1,20 +1,21 @@
 package com.estsoft.memosquare.activities;
 
 import android.content.Context;
+import android.graphics.Point;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.estsoft.memosquare.R;
@@ -69,6 +70,7 @@ public class WebBrowserActivity extends AppCompatActivity {
     private WebBrowserMemoWriteFragment mWebBrowserMemoWriteFragment;
     private WebBrowserMemoViewFragment mWebBrowserMemoViewFragment;
     private FragmentManager mFragmentManager;
+    private LinearLayout.LayoutParams mContainerParams;
 
     // 현재 상태를 저장하기 위한 변수
     private int currentMode;    // 현재 모드
@@ -82,6 +84,12 @@ public class WebBrowserActivity extends AppCompatActivity {
 
         // 첫 모드는 웹 뷰 모드
         currentMode = WEBBROWSING;
+
+        // memo container 용 레이아웃 파라미터 할당
+        Point size = new Point();
+        getWindowManager().getDefaultDisplay().getSize(size);
+        mContainerParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT
+                , (int)(size.y * 0.4));
 
         // 1. Setup Url EditText, go Url Button
         mUrlInput.setText(basicUrl);
@@ -119,6 +127,9 @@ public class WebBrowserActivity extends AppCompatActivity {
                 // 이미 MainActivity가 있으면 그냥 finish()
                 // 없으면 startActivity 후 finish()
                 Toast.makeText(WebBrowserActivity.this, "Square is clicked", Toast.LENGTH_SHORT).show();
+
+                // 일단은 그냥 finish()
+                finish();
             }
         });
 
@@ -140,7 +151,7 @@ public class WebBrowserActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // memo write 모드로 변경
                 changeMode(MEMOWRITE);
-                Toast.makeText(WebBrowserActivity.this, "fab is clicked", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(WebBrowserActivity.this, "fab is clicked", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -190,35 +201,35 @@ public class WebBrowserActivity extends AppCompatActivity {
             case WEBBROWSING:
                 // 1. 툴바를 visible로
                 mAppBarLayout.setVisibility(View.VISIBLE);
+
                 // 2. web_memo_container를 gone으로
                 mMemoContainer.setVisibility(View.GONE);
-                // 3. web_memo_view, web_memo_write fragment들을 null로 할당
-                // current mode에 따라 fragment manager에서 지운 후 null로
+
+                // current mode에 따라 fragment manager에서 지운다
                 if (currentMode == MEMOWRITE) {
                     mFragmentManager.beginTransaction()
                             .remove(mWebBrowserMemoWriteFragment)
                             .commit();
-                    mWebBrowserMemoWriteFragment = null;
                 } else if (currentMode == MEMOVIEW) {
                     mFragmentManager.beginTransaction()
                             .remove(mWebBrowserMemoViewFragment)
                             .commit();
-                    mWebBrowserWebViewFragment = null;
                 } else {
                     Timber.d("wrong mode number");
                 }
+
                 // 4. web_fab를 visible로
                 mFab.setVisibility(View.VISIBLE);
+
                 // 5. current mode를 바꾼다
                 currentMode = WEBBROWSING;
-                // viewpager는 처음 생성시에 만들고 없애지 않으므로 따로 설정하지 않는다
+
                 break;
             case MEMOWRITE:
-                // 1. 툴바를 gone으로
-                mAppBarLayout.setVisibility(View.GONE);
-                // 2. web_memo_container를 visible로
-                mMemoContainer.setVisibility(View.VISIBLE);
-                // 3. web_memo_container에 WebMomoWriteFragment를 담는다
+                // 1. 메모 형태로 레이아웃을 바꾼다
+                changeLayoutToMemo();
+
+                // 2. web_memo_container에 WebMomoWriteFragment를 담는다
                 if (mWebBrowserMemoWriteFragment == null) {
                     mWebBrowserMemoWriteFragment = new WebBrowserMemoWriteFragment();
                 }
@@ -234,17 +245,16 @@ public class WebBrowserActivity extends AppCompatActivity {
                     mFragmentManager.beginTransaction()
                             .replace(R.id.web_memo_container, mWebBrowserMemoWriteFragment);
                 }
-                // 4. web_fab를 gone으로
-                mFab.setVisibility(View.GONE);
-                // 5. current mode를 변경한다
+
+                // 3. current mode를 변경한다
                 currentMode = MEMOWRITE;
+
                 break;
             case MEMOVIEW:
-                // 1. 툴바를 gone으로
-                mAppBarLayout.setVisibility(View.GONE);
-                // 2. web_memo_container를 visible로
-                mMemoContainer.setVisibility(View.VISIBLE);
-                // 3. web_memo_container에 WebMomoViewFragment를 담는다
+                // 1. 메모 형태로 레이아웃을 바꾼다
+                changeLayoutToMemo();
+
+                // 2. web_memo_container에 WebMomoViewFragment를 담는다
                 if (mWebBrowserWebViewFragment == null) {
                     mWebBrowserMemoViewFragment = new WebBrowserMemoViewFragment();
                 }
@@ -260,13 +270,40 @@ public class WebBrowserActivity extends AppCompatActivity {
                     mFragmentManager.beginTransaction()
                             .replace(R.id.web_memo_container, mWebBrowserMemoViewFragment);
                 }
-                // 4. web_fab를 gone으로
-                mFab.setVisibility(View.GONE);
-                // 5. current mode를 바꾼다
+
+                // 3. current mode를 바꾼다
                 currentMode = MEMOVIEW;
+
                 break;
             default:
                 Timber.d("wrong mode number " + mode);
+        }
+    }
+
+    // 메모 쓰기와 보기 뷰 형태로 액티비티 모습 변경
+    private void changeLayoutToMemo() {
+        // 1. memo_container를 준비한다
+        showMemoContainer();
+
+        // 2. web_fab를 gone으로
+        mFab.setVisibility(View.GONE);
+    }
+
+    // memo_container 설정
+    private void showMemoContainer() {
+        // 보이게하고
+        mMemoContainer.setVisibility(View.VISIBLE);
+        // height 적용하고
+        mMemoContainer.setLayoutParams(mContainerParams);
+    }
+
+    // memo write, view fragment를 null로 만든다
+    private void clearMemoFragments() {
+        if (mWebBrowserMemoWriteFragment != null) {
+            mWebBrowserMemoWriteFragment = null;
+        }
+        if (mWebBrowserMemoViewFragment != null) {
+            mWebBrowserWebViewFragment = null;
         }
     }
 
@@ -294,6 +331,10 @@ public class WebBrowserActivity extends AppCompatActivity {
             changeUrl(url);
         }
         mWebBrowserWebViewFragment.goUrl(url);
+        changeMode(WEBBROWSING);
+
+        // 새 url이 로드되었으므로 이전 메모 기록은 지운다
+        clearMemoFragments();
     }
 
     // 1.4 EditText 엔터 후 포커스 없애기
@@ -308,18 +349,20 @@ public class WebBrowserActivity extends AppCompatActivity {
 
     // 1.5  토글 가능여부 저장하기
     public void setToggleAvailable(boolean available) {
-        Timber.d("toggle available: " + available);
+        Timber.d("setToggleAvailable: " + available);
         toggleAvailable = available;
     }
 
     // 2 웹뷰와 메모 쓰기의 상호 작용을 위한 메소드
     // 2.1 하이라이트 기능이 가능한지 반환
     public boolean isToggleAvailable() {
+        Timber.d("isToggleAvailable: " + toggleAvailable);
         return toggleAvailable;
     }
 
     // 2.2 하이라이트 기능 토글
     public void toggleHighLight() {
+        Timber.d("toggleHighLight");
         mWebBrowserWebViewFragment.highLight();
     }
 

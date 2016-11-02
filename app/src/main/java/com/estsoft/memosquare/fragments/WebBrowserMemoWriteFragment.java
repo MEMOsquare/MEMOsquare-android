@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -27,7 +28,7 @@ import timber.log.Timber;
  * 깔끔한 코드를 위해 OnClickListener를 implements하여 구현하였음
  */
 
-public class WebBrowserMemoWriteFragment extends Fragment implements View.OnClickListener {
+public class WebBrowserMemoWriteFragment extends Fragment {
 
     // 위젯 할당
     @BindView(R.id.highlight_btn) Button mHighLightButton;
@@ -58,6 +59,23 @@ public class WebBrowserMemoWriteFragment extends Fragment implements View.OnClic
         // 공개 상태로 시작
         mIsSecret = false;
 
+        // highlight 버튼 리스너
+        mHighLightButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Timber.d("highlight_btn clicked");
+                // activity를 이용해서 하이라이트 활성화 후 데이터 받아오기까지
+                // 하이라이트가 가능하다면
+                if (mActivity.isToggleAvailable()) {
+                    mActivity.toggleHighLight();
+                }
+                // 불가능하다면
+                else {
+                    Toast.makeText(mActivity, mWait, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
         // switch에 리스너 할당
         mSecretSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -73,33 +91,19 @@ public class WebBrowserMemoWriteFragment extends Fragment implements View.OnClic
             }
         });
 
-        return view;
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.highlight_btn:
-                // activity를 이용해서 하이라이트 활성화 후 데이터 받아오기까지
-                // 하이라이트가 가능하다면
-                if (mActivity.isToggleAvailable()) {
-                    mActivity.toggleHighLight();
-                }
-                // 불가능하다면
-                else {
-                    Toast.makeText(mActivity, mWait, Toast.LENGTH_SHORT).show();
-                }
-                break;
-            case R.id.memo_save_btn:
+        // save 버튼 리스너
+        mSaveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 // 메모의 유효성 검사 후 저장
                 // 공개여부도 같이 저장
                 Toast.makeText(mActivity, "title: " + mTitleInput.getText().toString()
                         + "\ncontent: " + mContentInput.getText().toString(), Toast.LENGTH_SHORT)
                         .show();
-                break;
-            default:
-                Timber.w("wrong view clicked");
-        }
+            }
+        });
+
+        return view;
     }
 
     // 하이라이트 된 메모를 저장하는 메소드(WebBrowserActivity를 통해 WebViewFragment에서 사용)
@@ -115,5 +119,8 @@ public class WebBrowserMemoWriteFragment extends Fragment implements View.OnClic
         // 이탤릭체로 변환 후 저장
         memo += "<i>\"" + content + "\"</i>";
         mContentInput.setText(Html.fromHtml(memo));
+
+        // edittext의 커서를 맨 밑으로
+        mContentInput.setSelection(mContentInput.length());
     }
 }
