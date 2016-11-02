@@ -1,11 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:text="Sun Young Park"
-        android:layout_width="match_parent"
+    <ImageView
+        android:id="@+id/nav_profile_image"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textView2" />
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/padding_24"
+        android:paddingTop="@dimen/padding_24"
+        app:srcCompat="@drawable/com_facebook_close"/>
+
+    <TextView
+        android:id="@+id/nav_profile_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:paddingTop="@dimen/padding_16"
+        android:paddingBottom="@dimen/padding_16"
+        android:layout_marginBottom="8dp"
+        android:text="@string/sample"
+        android:fontFamily="sans-serif"
+        android:textSize="30sp" />
 </LinearLayout>

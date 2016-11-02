@@ -1,6 +1,15 @@
 package com.estsoft.memosquare.activities;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -34,6 +43,8 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -97,11 +108,50 @@ public class WelcomeActivity extends AppCompatActivity {
                                 try {
                                     //받아온 user정보 sharedPreference에 등록
                                     user = new FbUserModel();
-                                    user.setFacebookID(object.getString("id"));
+                                    user.setFb_id(object.getString("id"));
                                     user.setEmail(object.getString("email"));
                                     user.setName(object.getString("name"));
-                                    user.setGender(object.getString("gender"));
                                     PrefUtils.setCurrentUser(user,WelcomeActivity.this);
+
+                                     //fetching facebook's profile picture
+                                    new AsyncTask<Void,Void,Void>(){
+                                        @Override
+                                        protected Void doInBackground(Void... params) {
+                                            URL imageURL = null;
+                                            try {
+                                                imageURL = new URL("https://graph.facebook.com/" + user.getFb_id() + "/picture");
+                                            } catch (MalformedURLException e) {
+                                                e.printStackTrace();
+                                            }
+                                            try {
+                                                Bitmap bitmap  = BitmapFactory.decodeStream(imageURL.openConnection().getInputStream());
+                                                user.setPicture_bitmap(bitmap);
+                                                Timber.d("129: "+user.toString());
+                                                PrefUtils.setCurrentUser(user,WelcomeActivity.this);
+
+                                                //MainActivity로 넘어감
+//                                                Toast.makeText(WelcomeActivity.this,"welcome "+user.getName(),Toast.LENGTH_LONG).show();
+//                                                Intent intent=new Intent(WelcomeActivity.this,MainActivity.class);
+//                                                startActivity(intent);
+//                                                finish();
+
+                                            } catch (IOException e) {
+                                                e.printStackTrace();
+                                            }
+                                            return null;
+                                        }
+
+                                        @Override
+                                        protected void onPostExecute(Void aVoid) {
+                                            //MainActivity로 넘어감
+                                            Toast.makeText(WelcomeActivity.this,"welcome "+user.getName(),Toast.LENGTH_LONG).show();
+                                            Intent intent=new Intent(WelcomeActivity.this,MainActivity.class);
+                                            startActivity(intent);
+                                            finish();
+                                        }
+                                    }.execute();
+
+
 
                                     //send token to backend server
                                     //// TODO: 2016-10-31 server한테 성공 시 메세지 달라고 하기 
@@ -122,16 +172,16 @@ public class WelcomeActivity extends AppCompatActivity {
                                     e.printStackTrace();
                                 }
                                 finish();
-                                //MainActivity로 넘어감
-                                Toast.makeText(WelcomeActivity.this,"welcome "+user.getName(),Toast.LENGTH_LONG).show();
-                                Intent intent=new Intent(WelcomeActivity.this,MainActivity.class);
-                                startActivity(intent);
-                                finish();
+//                                //MainActivity로 넘어감
+//                                Toast.makeText(WelcomeActivity.this,"welcome "+user.getName(),Toast.LENGTH_LONG).show();
+//                                Intent intent=new Intent(WelcomeActivity.this,MainActivity.class);
+//                                startActivity(intent);
+//                                finish();
                             }
                         });
 
                 Bundle parameters = new Bundle();
-                parameters.putString("fields", "id,name,email,picture.width(120).height(120)");
+                parameters.putString("fields", "id,name,email");
                 request.setParameters(parameters);
                 request.executeAsync();
             }
@@ -154,6 +204,33 @@ public class WelcomeActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
-    
-    //// TODO: 2016-10-31 로그아웃 액티비티도 만들기(언젠가) 
+
+    //facebook picture
+    public static Bitmap getFacebookProfilePicture(String userID) throws IOException {
+        URL imageURL = new URL(R.string.fb_getprorileurl_1 + userID + R.string.fb_getprorileurl_2);
+        return BitmapFactory.decodeStream(imageURL.openConnection().getInputStream());
+    }
+
+    //프사에 round처리
+    public static Bitmap getRoundedBitmap(Bitmap bitmap) {
+        final Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        final Canvas canvas = new Canvas(output);
+
+        final int color = Color.GRAY;
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+        final RectF rectF = new RectF(rect);
+
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        canvas.drawOval(rectF, paint);
+
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+
+        bitmap.recycle();
+
+        return output;
+    }
 }

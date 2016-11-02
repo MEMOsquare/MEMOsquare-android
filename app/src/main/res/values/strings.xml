@@ -3,6 +3,7 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
+    <string name="sample">sample</string>
 
     <!-- Sign in with XX -->
     <!-- Google Server Client ID -->
@@ -10,12 +11,17 @@
     <!-- Facebook app id-->
     <string name="fb_login_protocol_scheme">fb192456264535234</string>
     <string name="fb_app_id">192456264535234</string>
+    <!-- Get facebook profile image -->
+    <string name="fb_getprorileurl_1">https://graph.facebook.com/</string>
+    <string name="fb_getprorileurl_2">/picture</string>
 
     <!-- Elements in each activity -->
     <!-- Main Page -->
-    <string name="main_yours">yours</string>
-    <string name="main_clipbook">clipbook</string>
-    <string name="main_square">square</string>
+    <string name="main_mymemo">My memo</string>
+    <string name="main_clipbook">Clipbook</string>
+    <string name="main_square">Square</string>
+    <string name="sign_out">Sign out</string>
+
     <!-- WebBrowser -->
     <string name="tab_web">web</string>
     <string name="tab_memo">memo</string>

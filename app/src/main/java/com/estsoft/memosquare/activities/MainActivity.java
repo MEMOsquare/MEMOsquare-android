@@ -1,5 +1,6 @@
 package com.estsoft.memosquare.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -15,21 +16,30 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.estsoft.memosquare.R;
 import com.estsoft.memosquare.adapters.MainPagerAdapter;
 import com.estsoft.memosquare.fragments.MainTabMymemoFragment;
 import com.estsoft.memosquare.fragments.MainTabClipbookFragment;
 import com.estsoft.memosquare.fragments.MainTabSquareFragment;
+import com.estsoft.memosquare.utils.PrefUtils;
+import com.facebook.login.LoginManager;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
 public class MainActivity extends AppCompatActivity{
 
-    private DrawerLayout mDrawerLayout;
-    private ViewPager viewPager;
-    
+    @BindView(R.id.toolbar) Toolbar mToolbar;
+    @BindView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
+    @BindView(R.id.nav_view) NavigationView navigationView;
+    @BindView(R.id.viewpager) ViewPager viewPager;
+    @BindView(R.id.tabLayout) TabLayout tabLayout;
+    @BindView(R.id.fab) FloatingActionButton fab;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,41 +55,55 @@ public class MainActivity extends AppCompatActivity{
 
         // 1. Setup Toolbar
         {
-            setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+            setSupportActionBar(mToolbar);
             final ActionBar ab = getSupportActionBar();
-            ab.setHomeAsUpIndicator(R.drawable.ic_menu);
+            ab.setHomeAsUpIndicator(R.drawable.logo_main);
             ab.setDisplayHomeAsUpEnabled(true);
         }
 
         // 2. Setup Drawer
         {
-            mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+            //set user profile image, profile name
+            View hView =  navigationView.getHeaderView(0);
+            ImageView nav_profileimage = (ImageView)hView.findViewById(R.id.nav_profile_image);
+            TextView nav_profilename = (TextView)hView.findViewById(R.id.nav_profile_name);
+            nav_profileimage.setImageBitmap(PrefUtils.getCurrentUser(MainActivity.this).getPicture_bitmap());
+            nav_profilename.setText(PrefUtils.getCurrentUser(MainActivity.this).getName());
+
+            //set menu item selected listeber
             navigationView.setNavigationItemSelectedListener(
                     new NavigationView.OnNavigationItemSelectedListener() {
                         @Override
                         public boolean onNavigationItemSelected(MenuItem menuItem) {
+                            switch (menuItem.getItemId()){
+                                //sign out 처리
+                                case R.id.menuitem_signout:
+                                    PrefUtils.clearCurrentUser(MainActivity.this);
+                                    // facebook login manager
+                                    LoginManager.getInstance().logOut();
+                                    Intent intent=new Intent(MainActivity.this, WelcomeActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                            }
                             menuItem.setChecked(true);
                             mDrawerLayout.closeDrawers();
-                            return true;
+                            return false;
                         }
                     });
         }
 
         // 3. Setup View Pager
         {
-            //3.1. Initializing ViewPager
-            viewPager = (ViewPager) findViewById(R.id.viewpager);
-
+            //3.1. Initializing ViewPager ->bindview로 처리
             //3.2. Creating PagerAdapter
             MainPagerAdapter adapter = new MainPagerAdapter(getSupportFragmentManager());
-            adapter.addFragment(new MainTabMymemoFragment(), getString(R.string.main_yours));
+            adapter.addFragment(new MainTabMymemoFragment(), getString(R.string.main_mymemo));
             adapter.addFragment(new MainTabClipbookFragment(), getString(R.string.main_clipbook));
             adapter.addFragment(new MainTabSquareFragment(), getString(R.string.main_square));
             viewPager.setAdapter(adapter);
 
             //3.3. Initializing TabLayout
-            TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+
 
             //3.4. Connecting tabLayout, ViewPager
             tabLayout.setupWithViewPager(viewPager);
@@ -87,8 +111,8 @@ public class MainActivity extends AppCompatActivity{
 
         // 4. Setup Floating Action Button
         {
-            FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-            //// TODO: 2016-11-01 fab처리 
+
+            //// TODO: 2016-11-01 fab처리
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
