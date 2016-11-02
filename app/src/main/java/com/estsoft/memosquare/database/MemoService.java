@@ -11,6 +11,6 @@ import retrofit2.http.GET;
  */
 
 public interface MemoService {
-    @GET("memo/")
+    @GET("memo/all")
     Call<ModelList<MemoModel>> getmymemos();
 }

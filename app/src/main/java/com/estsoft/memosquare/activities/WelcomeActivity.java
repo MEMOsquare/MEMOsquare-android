@@ -12,6 +12,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -42,6 +43,9 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -51,6 +55,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -77,7 +82,8 @@ public class WelcomeActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         // 1.1 If current user exists, go to MainActivity
-        if(PrefUtils.getCurrentUser(WelcomeActivity.this) != null){
+        if(PrefUtils.getCurrentUser(WelcomeActivity.this) != null ){
+            Timber.d("81: "+PrefUtils.getCurrentUser(WelcomeActivity.this).toString());
             Intent homeIntent = new Intent(WelcomeActivity.this, MainActivity.class);
             startActivity(homeIntent);
             finish();
@@ -111,7 +117,6 @@ public class WelcomeActivity extends AppCompatActivity {
                                     user.setFb_id(object.getString("id"));
                                     user.setEmail(object.getString("email"));
                                     user.setName(object.getString("name"));
-                                    PrefUtils.setCurrentUser(user,WelcomeActivity.this);
 
                                      //fetching facebook's profile picture
                                     new AsyncTask<Void,Void,Void>(){
@@ -119,21 +124,14 @@ public class WelcomeActivity extends AppCompatActivity {
                                         protected Void doInBackground(Void... params) {
                                             URL imageURL = null;
                                             try {
-                                                imageURL = new URL("https://graph.facebook.com/" + user.getFb_id() + "/picture");
+                                                imageURL = new URL("https://graph.facebook.com/" + user.getFb_id() + "/picture?width=300&amp;height=300");
                                             } catch (MalformedURLException e) {
                                                 e.printStackTrace();
                                             }
                                             try {
                                                 Bitmap bitmap  = BitmapFactory.decodeStream(imageURL.openConnection().getInputStream());
-                                                user.setPicture_bitmap(bitmap);
-                                                Timber.d("129: "+user.toString());
+                                                user.setPicture_url(saveBitmapImageAsPngInSDcard(bitmap));
                                                 PrefUtils.setCurrentUser(user,WelcomeActivity.this);
-
-                                                //MainActivity로 넘어감
-//                                                Toast.makeText(WelcomeActivity.this,"welcome "+user.getName(),Toast.LENGTH_LONG).show();
-//                                                Intent intent=new Intent(WelcomeActivity.this,MainActivity.class);
-//                                                startActivity(intent);
-//                                                finish();
 
                                             } catch (IOException e) {
                                                 e.printStackTrace();
@@ -151,19 +149,21 @@ public class WelcomeActivity extends AppCompatActivity {
                                         }
                                     }.execute();
 
-
-
                                     //send token to backend server
                                     //// TODO: 2016-10-31 server한테 성공 시 메세지 달라고 하기 
                                     TokenService service = ServiceGenerator.createService(TokenService.class);
-                                    Call<String> call = service.getresult();
-                                    call.enqueue(new Callback<String>() {
+                                    Call<ResponseBody> call = service.getresult();
+                                    call.enqueue(new Callback<ResponseBody>() {
                                         @Override
-                                        public void onResponse(Call<String> call, Response<String> response) {
-                                            Timber.d("server conn success: "+response.body());
+                                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                            try {
+                                            Timber.d("server conn success: "+response.body().string());
+                                            } catch (IOException e) {
+                                                e.printStackTrace();
+                                            }
                                         }
                                         @Override
-                                        public void onFailure(Call<String> call, Throwable t) {
+                                        public void onFailure(Call<ResponseBody> call, Throwable t) {
                                             Timber.d("server conn fail: "+t.getMessage());
                                         }
                                     });
@@ -205,32 +205,26 @@ public class WelcomeActivity extends AppCompatActivity {
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
-    //facebook picture
-    public static Bitmap getFacebookProfilePicture(String userID) throws IOException {
-        URL imageURL = new URL(R.string.fb_getprorileurl_1 + userID + R.string.fb_getprorileurl_2);
-        return BitmapFactory.decodeStream(imageURL.openConnection().getInputStream());
-    }
-
-    //프사에 round처리
-    public static Bitmap getRoundedBitmap(Bitmap bitmap) {
-        final Bitmap output = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), Bitmap.Config.ARGB_8888);
-        final Canvas canvas = new Canvas(output);
-
-        final int color = Color.GRAY;
-        final Paint paint = new Paint();
-        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-        final RectF rectF = new RectF(rect);
-
-        paint.setAntiAlias(true);
-        canvas.drawARGB(0, 0, 0, 0);
-        paint.setColor(color);
-        canvas.drawOval(rectF, paint);
-
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-        canvas.drawBitmap(bitmap, rect, rect, paint);
-
-        bitmap.recycle();
-
-        return output;
+    /**
+     * @param bitmap
+     * @return bitmap imamge path
+     */
+    public String saveBitmapImageAsPngInSDcard(Bitmap bitmap){
+        String sdCardDirectory = Environment.getExternalStorageDirectory().toString();
+        try {
+            //sd card directory + /memosquare 아래에 profileimage.png로 저장
+            new File(sdCardDirectory+"/memosquare").mkdir();
+            File profileimage = new File(sdCardDirectory+"/memosquare/profileimage.png");
+            FileOutputStream outStream = new FileOutputStream(profileimage);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outStream);
+            /* 100 to keep full quality of the image */
+            outStream.flush();
+            outStream.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return sdCardDirectory+"/memosquare/profileimage.png";
     }
 }

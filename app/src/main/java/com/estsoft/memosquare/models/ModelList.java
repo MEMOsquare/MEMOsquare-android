@@ -13,7 +13,7 @@ import java.util.List;
 
 public class ModelList<model> {
 
-    @SerializedName("results")
+    @SerializedName("memo_list")
     private List<model> modellist;
 
     public List<model> getModellist() {

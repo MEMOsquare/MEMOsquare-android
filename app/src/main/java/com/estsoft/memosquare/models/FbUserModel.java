@@ -10,7 +10,7 @@ public class FbUserModel {
     private String fb_id;
     private String name;
     private String email;
-    private Bitmap picture_bitmap;
+    private String picture_url;
 
     public String getFb_id() {
         return fb_id;
@@ -36,12 +36,12 @@ public class FbUserModel {
         this.email = email;
     }
 
-    public Bitmap getPicture_bitmap() {
-        return picture_bitmap;
+    public String getPicture_url() {
+        return picture_url;
     }
 
-    public void setPicture_bitmap(Bitmap picture_bitmap) {
-        this.picture_bitmap = picture_bitmap;
+    public void setPicture_url(String picture_url) {
+        this.picture_url = picture_url;
     }
 
     @Override
@@ -50,7 +50,7 @@ public class FbUserModel {
                 "fb_id='" + fb_id + '\'' +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
-                ", picture_bitmap=" + picture_bitmap +
+                ", picture_url='" + picture_url + '\'' +
                 '}';
     }
 }

@@ -1,6 +1,8 @@
 package com.estsoft.memosquare.activities;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -25,10 +27,14 @@ import com.estsoft.memosquare.fragments.MainTabMymemoFragment;
 import com.estsoft.memosquare.fragments.MainTabClipbookFragment;
 import com.estsoft.memosquare.fragments.MainTabSquareFragment;
 import com.estsoft.memosquare.utils.PrefUtils;
+import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
+
+import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 
 public class MainActivity extends AppCompatActivity{
@@ -44,6 +50,7 @@ public class MainActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
@@ -57,7 +64,7 @@ public class MainActivity extends AppCompatActivity{
         {
             setSupportActionBar(mToolbar);
             final ActionBar ab = getSupportActionBar();
-            ab.setHomeAsUpIndicator(R.drawable.logo_main);
+            ab.setHomeAsUpIndicator(R.drawable.ic_menu);
             ab.setDisplayHomeAsUpEnabled(true);
         }
 
@@ -67,7 +74,8 @@ public class MainActivity extends AppCompatActivity{
             View hView =  navigationView.getHeaderView(0);
             ImageView nav_profileimage = (ImageView)hView.findViewById(R.id.nav_profile_image);
             TextView nav_profilename = (TextView)hView.findViewById(R.id.nav_profile_name);
-            nav_profileimage.setImageBitmap(PrefUtils.getCurrentUser(MainActivity.this).getPicture_bitmap());
+            Timber.d("MainActivity77: "+PrefUtils.getCurrentUser(MainActivity.this).toString());
+            nav_profileimage.setImageBitmap(getProfileImage(PrefUtils.getCurrentUser(MainActivity.this).getPicture_url()));
             nav_profilename.setText(PrefUtils.getCurrentUser(MainActivity.this).getName());
 
             //set menu item selected listeber
@@ -117,7 +125,6 @@ public class MainActivity extends AppCompatActivity{
                 @Override
                 public void onClick(View view) {
                     startActivity(new Intent(MainActivity.this, WebBrowserActivity.class));
-                    Snackbar.make(view, "Here's a Snackbar", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 }
             });
         }
@@ -137,6 +144,14 @@ public class MainActivity extends AppCompatActivity{
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public Bitmap getProfileImage(String url){
+        Bitmap bitmap = BitmapFactory.decodeFile(url);
+        if (bitmap == null) {
+            bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_account_box);
+        }
+        return bitmap;
     }
 
 }

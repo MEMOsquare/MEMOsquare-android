@@ -19,9 +19,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:paddingTop="@dimen/padding_16"
-        android:paddingBottom="@dimen/padding_16"
         android:layout_marginBottom="8dp"
         android:text="@string/sample"
         android:fontFamily="sans-serif"
-        android:textSize="30sp" />
+        android:textSize="@dimen/font_cardtitle_24" />
 </LinearLayout>

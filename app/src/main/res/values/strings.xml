@@ -13,7 +13,7 @@
     <string name="fb_app_id">192456264535234</string>
     <!-- Get facebook profile image -->
     <string name="fb_getprorileurl_1">https://graph.facebook.com/</string>
-    <string name="fb_getprorileurl_2">/picture</string>
+    <string name="fb_getprorileurl_2">/picture?width=300&amp;height=300</string>
 
     <!-- Elements in each activity -->
     <!-- Main Page -->

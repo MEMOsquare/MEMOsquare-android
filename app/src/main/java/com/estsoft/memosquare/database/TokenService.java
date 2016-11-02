@@ -1,5 +1,6 @@
 package com.estsoft.memosquare.database;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.POST;
 
@@ -9,5 +10,5 @@ import retrofit2.http.POST;
 
 public interface TokenService {
     @POST("sign_in/")
-    Call<String> getresult();
+    Call<ResponseBody> getresult();
 }

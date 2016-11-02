@@ -14,5 +14,7 @@
     <dimen name="height_drawer_56">56dp</dimen>
     <dimen name="height_drawermenu_48">48dp</dimen>
 
+    <dimen name="font_cardtitle_24">24sp</dimen>
+    <dimen name="font_cardscontent_16">16sp</dimen>
     <dimen name="font_cardsmall_12">12sp</dimen>
 </resources>
