@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.ConsoleMessage;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
@@ -85,6 +86,8 @@ public class WebBrowserWebViewFragment extends Fragment {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 mActivity.changeUrl(url);
+                mActivity.setToggleAvailable(false);
+                mHandler.removeCallbacksAndMessages(null);
                 return false;
             }
 
@@ -97,8 +100,9 @@ public class WebBrowserWebViewFragment extends Fragment {
                 mHandler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(getActivity(), "injection complete", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mActivity, "injection complete", Toast.LENGTH_SHORT).show();
                         mInjectScript.injectJavaScriptFiles(webView);
+                        mActivity.setToggleAvailable(true);
                     }
                 }, 3000);
             }
@@ -141,6 +145,42 @@ public class WebBrowserWebViewFragment extends Fragment {
             return true;
         } else {
             return false;
+        }
+    }
+
+    // 하이라이트 동작시키기
+    public void highLight() {
+        mWebView.loadUrl("javascript:memosquareCliping();");
+    }
+
+    class JavaScriptInterface {
+
+        public JavaScriptInterface() {
+            Timber.d("constructor");
+        }
+
+        // 웹에서 텍스트를 받아오기 위한 메소드
+        @SuppressWarnings("unused")
+        @JavascriptInterface
+        public void getContent(String content) {
+            Timber.d("getContent: " + content);
+            mActivity.addMemo(content);
+        };
+
+        // 웹페이지 전체 내용을 받아오기 위한 메소드
+        // 디버깅용
+        @SuppressWarnings("unused")
+        @JavascriptInterface
+        public void getPage(String page) {
+            String temp = page;
+
+            // 로그 하나의 최대 길이는 4000
+            while (temp.length() > 4000) {
+                Timber.d("page: " + temp.substring(0, 4000));
+                temp = temp.substring(4000);
+            }
+
+            Timber.d("page: " + temp);
         }
     }
 }
