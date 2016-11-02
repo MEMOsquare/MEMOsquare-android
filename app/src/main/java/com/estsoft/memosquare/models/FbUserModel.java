@@ -1,14 +1,24 @@
 package com.estsoft.memosquare.models;
 
+import android.graphics.Bitmap;
+
 /**
  * Created by sun on 2016-10-31.
  */
 
 public class FbUserModel {
+    private String fb_id;
     private String name;
     private String email;
-    private String facebookID;
-    private String gender;
+    private Bitmap picture_bitmap;
+
+    public String getFb_id() {
+        return fb_id;
+    }
+
+    public void setFb_id(String fb_id) {
+        this.fb_id = fb_id;
+    }
 
     public String getName() {
         return name;
@@ -26,29 +36,21 @@ public class FbUserModel {
         this.email = email;
     }
 
-    public String getFacebookID() {
-        return facebookID;
+    public Bitmap getPicture_bitmap() {
+        return picture_bitmap;
     }
 
-    public void setFacebookID(String facebookID) {
-        this.facebookID = facebookID;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
+    public void setPicture_bitmap(Bitmap picture_bitmap) {
+        this.picture_bitmap = picture_bitmap;
     }
 
     @Override
     public String toString() {
         return "FbUserModel{" +
-                "name='" + name + '\'' +
+                "fb_id='" + fb_id + '\'' +
+                ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
-                ", facebookID='" + facebookID + '\'' +
-                ", gender='" + gender + '\'' +
+                ", picture_bitmap=" + picture_bitmap +
                 '}';
     }
 }
