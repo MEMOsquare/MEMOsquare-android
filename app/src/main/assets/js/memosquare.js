@@ -30,13 +30,19 @@ var highlight = function(event) {
     var text = target.text();
 
 //    $(event.target).addClass("highlight-by-memosquare");
-    if (target.css("backgroundColor") == "rgb(220, 20, 60)") {
+    if (target.css("backgroundColor") == "rgb(225, 225, 119)") {
         target.css("backgroundColor", "transparent");
     } else {
-        target.css("backgroundColor", "rgb(220, 20, 60)");
+        target.css("backgroundColor", "rgb(225, 225, 119)");
     }
     window.INTERFACE.getContent(text);
 //    window.INTERFACE.getPage(document.documentElement.outerHTML);
+}
+
+var copyImg = function(event) {
+    // 이미지 클릭시 예제 이미지 띄우는 것 구현해야함
+    // url 받아오는건 쉬울 듯 한데, 이미지 자체를 받아올 순 없으려나?
+    // 그럼 전에 선영이가 보여준거 그대로 구현할수 있을텐데
 }
 
 memosquareCliping = function() {
@@ -48,10 +54,4 @@ memosquareCliping = function() {
         $('p, li, h1, h2, h3, h4, h5, h6').bind("click",highlight);
         $('img').click(copyImg);
     }
-}
-
-var copyImg = function(event) {
-    // 이미지 클릭시 예제 이미지 띄우는 것 구현해야함
-    // url 받아오는건 쉬울 듯 한데, 이미지 자체를 받아올 순 없으려나?
-    // 그럼 전에 선영이가 보여준거 그대로 구현할수 있을텐데
 }
