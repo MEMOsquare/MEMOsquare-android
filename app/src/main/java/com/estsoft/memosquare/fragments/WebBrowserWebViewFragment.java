@@ -65,6 +65,7 @@ public class WebBrowserWebViewFragment extends Fragment {
         settings.setAllowUniversalAccessFromFileURLs(true);
 
         // 자바스크립트 객체 삽입
+        mWebView.addJavascriptInterface(new JavaScriptInterface(), "INTERFACE");
 
         // 크롬 클라이언트 설정
         mWebView.setWebChromeClient(new WebChromeClient() {
@@ -72,7 +73,7 @@ public class WebBrowserWebViewFragment extends Fragment {
             // 웹 콘솔 log 메세지 출력
             @Override
             public boolean onConsoleMessage(ConsoleMessage consoleMessage) {
-                Timber.d("console: " + consoleMessage);
+//                Timber.d("console: " + consoleMessage.message());
                 return super.onConsoleMessage(consoleMessage);
             }
         });
@@ -163,8 +164,14 @@ public class WebBrowserWebViewFragment extends Fragment {
         @SuppressWarnings("unused")
         @JavascriptInterface
         public void getContent(String content) {
-            Timber.d("getContent: " + content);
-            mActivity.addMemo(content);
+            final String CONTENT = content;
+            Timber.d("getContent: " + CONTENT);
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    mActivity.addMemo(CONTENT);
+                }
+            });
         };
 
         // 웹페이지 전체 내용을 받아오기 위한 메소드

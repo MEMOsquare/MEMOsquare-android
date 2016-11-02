@@ -19,12 +19,15 @@
     <EditText
         android:id="@+id/memo_title_input"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="35dp"
         android:hint="@string/title_hint"
-        android:textSize="23sp"
+        android:textSize="20sp"
         android:layout_margin="1dp"
         android:background="@android:color/white"
-        android:padding="10dp"/>
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"/>
 
     <EditText
         android:id="@+id/memo_content_input"
@@ -34,7 +37,10 @@
         android:hint="@string/content_hint"
         android:layout_margin="1dp"
         android:background="@android:color/white"
-        android:padding="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="3dp"
+        android:paddingBottom="3dp"
         android:gravity="start"/>
 
     <RelativeLayout
